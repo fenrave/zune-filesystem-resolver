@@ -54,7 +54,19 @@ local DirCase: {[any]: DirTypes} = { --Should only ever need to be ran once
 
         Config = envQuery["APPDATA"]
     },
---     ["macos"] = {}
+    ["macos"] = {
+        Home = envQuery["HOME"],
+
+        Temp = DirChecker(envQuery["TMPDIR"], "/var/tmp"),
+
+        Config = path.join(envQuery["HOME"], ".config"),
+
+        Logs = path.join(envQuery["HOME"], "Library", "Logs"),
+
+        Data = path.join(envQuery["HOME"], "Library"),
+
+        Cache = path.join(envQuery["HOME"], "Library", "Caches")
+    }
 }
 
 -----------------------------------------------------------------
@@ -95,8 +107,5 @@ function resolvefs:SetNewDirectory(SystemDirectory: string, NewPath: string): st
 
     return NewDir
 end
-
-local p = resolvefs:SetNewDirectory("Data","Hello")
-print(p)
 
 return resolvefs
