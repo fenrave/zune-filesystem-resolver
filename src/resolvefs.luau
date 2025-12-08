@@ -82,7 +82,9 @@ end
 type resolver_lib = {
     MakeTempDirectory: (self: resolver_lib, Path: string) -> string,
     GetSystemDirectories: (self: resolver_lib) -> DirTypes,
-    SetNewDirectory: (self: resolver_lib, DirChoice: string, Path: string) -> string
+    SetNewDirectory: (self: resolver_lib, DirChoice: string, Path: string) -> string,
+    SetPID: (self: resolver_lib, NewID: number) -> (),
+    SetProcessName: (self: resolver_lib, NewName: string) -> ()
 }
 
 local resolvefs = {} :: resolver_lib
@@ -98,6 +100,14 @@ end
 
 function resolvefs:GetSystemDirectories(): DirTypes
     return envPlatform
+end
+
+function resolvefs:SetPID(NewID: number)
+    PID = NewID
+end
+
+function resolvefs:SetProcessName(NewName: string)
+    INTERMEDIATE = NewName
 end
 
 function resolvefs:SetNewDirectory(SystemDirectory: string, NewPath: string): string
