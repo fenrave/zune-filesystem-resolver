@@ -59,7 +59,7 @@ local DirCase: {[any]: DirTypes} = { --Should only ever need to be ran once
 
         Temp = DirChecker(envQuery["TMPDIR"], "/var/tmp"),
 
-        Config = path.join(envQuery["HOME"], ".config"),
+        Config = path.join(envQuery["HOME"], "Library", "Preferences"),
 
         Logs = path.join(envQuery["HOME"], "Library", "Logs"),
 
