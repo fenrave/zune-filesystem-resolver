@@ -8,11 +8,11 @@ local path = fs.path
 ------------------
 local SystemPlatform: string = platform.os
 local envQuery = process.env
-local envPlatform: DirTypes
+local envPlatform: DirTypes?
 ------------------
 
 local INTERMEDIATE: string = "ZuneProcess"
-local PID: number = process.pid()
+local PID: number? = process.pid()
 
 type DirTypes = {
     Home: string,
@@ -102,7 +102,7 @@ function resolvefs:GetSystemDirectories(): DirTypes
     return envPlatform
 end
 
-function resolvefs:SetPID(NewID: number)
+function resolvefs:SetPID(NewID: number?)
     PID = NewID
 end
 
@@ -111,7 +111,13 @@ function resolvefs:SetProcessName(NewName: string)
 end
 
 function resolvefs:SetNewDirectory(SystemDirectory: string, NewPath: string): string
-    local NewDir = path.join(envPlatform[SystemDirectory], INTERMEDIATE, tostring(PID), NewPath)
+    local NewDir: string
+
+    if not PID then
+        NewDir = path.join(envPlatform[SystemDirectory], INTERMEDIATE, NewPath)
+    else
+        NewDir = path.join(envPlatform[SystemDirectory], INTERMEDIATE, tostring(PID), NewPath)
+    end
 
     fs.makeDir(NewDir, true)
 
